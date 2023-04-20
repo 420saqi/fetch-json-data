@@ -1,36 +1,29 @@
-
-class Model{
-  final int id;
+class Item{
   final String name;
+  final String image;
   final String desc;
-  final String img;
-  final double price;
+  final int price;
 
-  Model({required this.id,required this.name, required this.desc, required this.img, required this.price});
+  Item({ required this.name,required this.image,required this.desc,required this.price});
+factory Item.fromjson(Map<dynamic, dynamic> map){
+ return Item(
+  name:map["name"],
+  image : map["image"],
+  desc : map["desc"],
+  price : map["price"],
+ );
+}
+tomap()=>{
+  "name" : name,
+  "image" : image,
+  "desc": desc,
+  "price" : price
+};
+
 }
 
-class Products{
- static final items=[
-    Model(
-        id: 1,
-    name: "Infinix",
-      desc: "My First Mobile",
-      price: 1000,
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFzxw64xFF8Bpbls4qt2XEpocxJNrwjTgwBg&usqp=CAU"
-    ),
-    Model(
-        id: 1,
-    name: "Infinix",
-      desc: "My First Mobile",
-      price: 1000,
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFzxw64xFF8Bpbls4qt2XEpocxJNrwjTgwBg&usqp=CAU"
-    ),
-    Model(
-        id: 1,
-    name: "Infinix",
-      desc: "My First Mobile",
-      price: 1000,
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFzxw64xFF8Bpbls4qt2XEpocxJNrwjTgwBg&usqp=CAU"
-    ),
-  ];
+class MyItems{
+ static List<Item> products= [
+
+ ];
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:practicecode/model.dart';
-import 'package:practicecode/mywidet.dart';
+import 'package:flutter/services.dart';
+import 'package:practicecode/widgettoreturn.dart';
+import 'dart:convert';
+import 'model.dart';
 
 main()=>runApp(MyApp());
 
@@ -20,37 +22,37 @@ class Home extends StatefulWidget
 {
   State<StatefulWidget> createState()=> HomeState();
 }
-class HomeState extends State<StatefulWidget>
-{
+class HomeState extends State<StatefulWidget> {
+
+  @override
+  void initState() {
+    super.initState();
+    getjsondata();
+  }
+ Future getjsondata()async{await Future.delayed(const Duration(seconds: 2));
+    var jsondata= await rootBundle.loadString('assets/json/data.json');
+  var decodejsondata =jsonDecode(jsondata);
+  var datafromproducts=decodejsondata["products"];
+MyItems.products = List.from(datafromproducts).map<Item>((e) => Item.fromjson(e)).toList();
+setState(() {
+
+});
+  }
+
   @override
   Widget build(BuildContext context) {
-return Scaffold(
-  appBar: AppBar(
-    title:Text('Hello Appbar '),
-  ),
-  body: ListView.builder(itemBuilder: (context,index)=>myWidget(obj: dumlist[index] ),
-  itemCount: dumlist.length,
-  )
-);
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Hello Appbar '),
+        ),
+        body:Column(
+          children: [
+            (MyItems.products!=null && MyItems.products.isNotEmpty)? ListView.builder(itemBuilder: (context,index)=>
+                MyWidget(item: MyItems.products[index]),
+              itemCount: MyItems.products.length,): Center(child: CircularProgressIndicator(),)
+          ],
+        )
+    );
   }
-
-
-  }
-  var dumlist=List.generate(Products.items.length, (index) => Products.items[index]);
-class myWidget extends StatelessWidget
-{
-  final Model obj;
-
-  const myWidget({super.key, required this.obj});
-  @override
-  Widget build(BuildContext context) {
-return ListTile(
-  leading: Image.network(obj.img),
-  title: Text(obj.name),
-  subtitle: Text(obj.desc),
-  trailing: Text("\$${obj.price.toString()}"),
-
-);
-  }
-
 }
+
